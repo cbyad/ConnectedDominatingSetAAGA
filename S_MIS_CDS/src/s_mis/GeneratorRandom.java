@@ -20,8 +20,8 @@ import java.util.Random;
 public class GeneratorRandom {
 	private static int largeur=900;
 	private static int longueur=1400;
-	private  static int rayon=largeur/2;
-	private static int instancesMax=100;
+	public  static int rayon=largeur/2;
+	public  static int instancesMax=100;
 
 	public static double density(ArrayList<Point> udg){
 		return udg.size()/(Math.PI*rayon*rayon);
