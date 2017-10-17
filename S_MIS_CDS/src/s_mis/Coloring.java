@@ -7,5 +7,5 @@ package s_mis;
  */
 public enum Coloring {
 
-	BLACK , GREY , WHITE , BLUE
+	BLACK , GRAY , WHITE , BLUE
 }

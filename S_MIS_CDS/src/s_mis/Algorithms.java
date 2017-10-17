@@ -13,8 +13,9 @@ public class Algorithms {
 	 * @param udg
 	 * @param seuil
 	 * @return list of black nodes (MIS)
+	 * @throws InterruptedException 
 	 */
-	public static ArrayList<PointWithColor> computeMisRef16(ArrayList<Point> udg , int seuil){	
+	public static ArrayList<PointWithColor> computeMisRef16(ArrayList<Point> udg , int seuil) {	
 
 		ArrayList<PointWithColor> whiteNode = coloringProcess(udg, Coloring.WHITE);
 		ArrayList<PointWithColor> MIS = new ArrayList<>();
@@ -24,19 +25,20 @@ public class Algorithms {
 
 		while(!candidat.isEmpty()){
 			PointWithColor random =candidat.remove(0);
-			if(random.getColor()==Coloring.BLUE) continue ;
+			if(random.getColor()==Coloring.GRAY) continue ;
 
 			random.setColor(Coloring.BLACK);
 			MIS.add(random);
-
-			for(PointWithColor pt: whiteNode){ // set all random neighour in blue
+			
+			for(PointWithColor pt: whiteNode){ // set all random neighour in gray
 				if (pt.distance(random)< seuil)
-					pt.setColor(Coloring.BLUE);		
+					pt.setColor(Coloring.GRAY);		
 			}
 
 			for(PointWithColor pt : whiteNode){
 				if (pt.distance(random)< seuil){
 					for(PointWithColor ptv : whiteNode){
+						if(ptv.equals(pt)) continue ;
 						if(ptv.distance(pt)< seuil && ptv.getColor()==Coloring.WHITE ){
 							ptv.setColor(Coloring.BLACK);
 							candidat.add(ptv);
@@ -47,6 +49,45 @@ public class Algorithms {
 		}	
 		return MIS;
 	}
+	
+	/**
+	 * 
+	 * @param udg
+	 * @param domSet
+	 * @param edgeThreshold
+	 * @return new MCDS with some nodes removed
+	 */
+	public static ArrayList<Point> optimise(ArrayList<Point> udg, ArrayList<Point> domSet, int edgeThreshold){
+        ArrayList<Point> copyDomSet = new ArrayList<>(domSet);
+        ArrayList<Point> pointsWithoutDomSet = new ArrayList<>(udg);
+        pointsWithoutDomSet.removeAll(domSet);
+        
+        for(Point p : domSet) {
+            ArrayList<Point> neighbor = neighbor(p, domSet, edgeThreshold);
+            if(neighbor.size()==1) {
+                if(neighbor(p, pointsWithoutDomSet, edgeThreshold).size()<1) {
+                    copyDomSet.remove(p);
+                }
+                
+                Point parent = neighbor.get(0);
+                ArrayList<Point> leafNeighbor = neighbor(p, pointsWithoutDomSet, edgeThreshold);
+                if(!leafNeighbor.isEmpty()) {
+                    boolean toRemove = false;
+                    for(Point tmp : leafNeighbor) {
+                        if(tmp.distanceSq(parent) > edgeThreshold*edgeThreshold) {
+                            toRemove = false;
+                            break;
+                        }
+                        else
+                            toRemove = true;
+                    }
+                    if(toRemove)
+                        copyDomSet.remove(p);
+                }
+            }
+        }
+        return copyDomSet;
+    }
 
 	/**
 	 * 
@@ -255,7 +296,7 @@ public class Algorithms {
 		notStable.removeAll(stable);
 		ArrayList<PointWithColor> notStableRes = new ArrayList<>();
 		for(Point p : notStable){
-			notStableRes.add(new PointWithColor(p, Coloring.GREY));
+			notStableRes.add(new PointWithColor(p, Coloring.GRAY));
 		}
 		return notStableRes;
 	}
@@ -288,5 +329,7 @@ public class Algorithms {
 		return result;
 	}
 
+	
+	
 
 }
