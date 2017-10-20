@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import s_mis.Algorithms;
 import s_mis.Coloring;
+import s_mis.GeneratorRandom;
 import s_mis.PointWithColor;
 ;
 
@@ -17,6 +18,7 @@ public class DefaultTeam {
 				ArrayList<PointWithColor> MIS=new ArrayList<>();
 				MIS = Algorithms.computeMisRef16(pts,edgeThreshold);
 				
+				System.out.println(pts.size());
 				System.out.println("Size : " + MIS.size()) ;
 				
 				//ArrayList<Point> MIS = stableMax(pts, edgeThreshold);
@@ -34,7 +36,6 @@ public class DefaultTeam {
 				System.out.println("MCDS : "+mcds.size());
 				
 //				
-				//printToFile("y00o", GeneratorRandom.generatorTest(1000, edgeThreshold));
 				
 				
 //				return Algorithms.convertion(MIS) ;

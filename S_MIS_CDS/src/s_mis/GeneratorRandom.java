@@ -22,7 +22,7 @@ public class GeneratorRandom {
 	private static int longueur=1400;
 	private  static int rayon=largeur/2;
 	private static int instancesMax=100;
-	
+
 	public static double density(ArrayList<Point> udg){
 		return udg.size()/(Math.PI*rayon*rayon);
 	}
@@ -46,29 +46,30 @@ public class GeneratorRandom {
 			int y = generator.nextInt(largeur);
 
 			Point candidate = new Point(x,y);
-			if(!isInCircle(candidate, centre) && !result.contains(candidate)) 
-				continue;
-
-			result.add(candidate);				
-			if(result.size()==nbPoints){
-				ArrayList<Point> resultCopy = (ArrayList<Point>)result.clone();
-				for(Point p : resultCopy){
-					while(Algorithms.neighbor(p, resultCopy, edgeThreshold).size()==0){
-						result.remove(p);
-						p= new Point(generator.nextInt(longueur), generator.nextInt(largeur));
-						result.add(p);
-					}
-				}				
+			if(isInCircle(candidate, centre) && !result.contains(candidate)) 
+			{
+				result.add(candidate);	
+				if(result.size()==nbPoints){
+					ArrayList<Point> resultCopy = (ArrayList<Point>)result.clone();
+					for(Point p : resultCopy){
+						while(Algorithms.neighbor(p, result, edgeThreshold).size()==0){
+							result.remove(p);
+							p= new Point(generator.nextInt(longueur), generator.nextInt(largeur));
+							result.add(p);
+						}
+					}				
+				}
 			}
+			else continue;
 		}
 		return result;	
 	}
-	
+
 	public static void allInstancesGenerator(int nbPoints , int edgeThreshold){
 		for(int i=0 ;i<instancesMax; i++)
 			printToFile("../S_MIS_CDS/tests/"+nbPoints+"/input_"+nbPoints+"_"+i+".points", 
 					instanceGenerator(nbPoints, edgeThreshold));
-			
+
 	}
 
 	public static boolean isInCircle(Point p , Point centre){
@@ -91,7 +92,7 @@ public class GeneratorRandom {
 			printToFile(filename+Integer.toString(index)+".points",result);
 		}
 	}
-	
+
 	public static  void printToFile(String filename,ArrayList<Point> points){
 		try {
 			PrintStream output = new PrintStream(new FileOutputStream(filename));
@@ -103,7 +104,7 @@ public class GeneratorRandom {
 	}
 
 	//FILE LOADER
-	private static ArrayList<Point> readFromFile(String filename) {
+	public static ArrayList<Point> readFromFile(String filename) {
 		String line;
 		String[] coordinates;
 		ArrayList<Point> points=new ArrayList<Point>();
@@ -131,9 +132,42 @@ public class GeneratorRandom {
 		}
 		return points;
 	}
-	
+
 	public static void main(String[] args) {
-		//allInstancesGenerator(XXXXXXX, 55);
+		//allInstancesGenerator(500, 55);
+		//allInstancesGenerator(800,55);
+		//allInstancesGenerator(1000, 55);
+		//allInstancesGenerator(1300, 55);
+		//allInstancesGenerator(1500, 55);
+		printToFile("touffue.txt", yo(1000,55));
+
 	}
-	
+
+
+	//new test generator (bad form)
+	public static ArrayList<Point> yo(int nbPoints, int edgeThreshold){
+		ArrayList<Point> result = new ArrayList<>();
+		Point centre = new Point(longueur/2,largeur/2);
+
+		Random generator = new Random();
+		generator.setSeed(System.currentTimeMillis());
+
+		Point pComp = new Point(centre.x+3,centre.y+3);
+		result.add(pComp);
+		Point copy= pComp;
+		while(result.size()<nbPoints){
+			int x = generator.nextInt(longueur);
+			int y = generator.nextInt(largeur);
+
+			Point candidate = new Point(x,y);
+			if(isInCircle(candidate, centre) && !result.contains(candidate) && candidate.distance(copy)<edgeThreshold  ) {
+				result.add(candidate);	
+				copy=candidate;
+			}
+			else continue;
+
+		}
+		return result;	
+	}
+
 }
