@@ -30,6 +30,14 @@
     </java>
   </target>
 	
+	<target name="bench" depends="compile"
+	          description="benchmark">
+	    <echo>================ Run Benchmark  ================</echo>
+	    <java classname="s_mis.BenchMark"
+	          classpath="${build}/:jars/*" fork="true">
+	    </java>
+	  </target>
+	
 	
   <target name="run" depends="compile"
           description="run examples">

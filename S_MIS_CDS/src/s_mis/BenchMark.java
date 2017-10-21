@@ -1,10 +1,14 @@
 package s_mis;
 
 import java.awt.Point;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -29,7 +33,7 @@ public class BenchMark {
 	}
 
 	public BenchMark(){}
-
+			
 	public ArrayList<ArrayList<Point>> getInstance(String dir) {
 		ArrayList<ArrayList<Point>> instances = new ArrayList<>();
 		File file = new File(dir);
@@ -102,7 +106,7 @@ public class BenchMark {
 				density3 = (size[2]/(Math.PI*GeneratorRandom.rayon*GeneratorRandom.rayon)),
 				density4 = (size[3]/(Math.PI*GeneratorRandom.rayon*GeneratorRandom.rayon));
 
-		bw.write("nbPoints,score_li,score_steiner,densite,temps_li,temps_steiner\n");
+		bw.write("nb Points,mcds Li,mcsd Steiner,densite,temps Li,temps Steiner\n");
 
 		int i =0 ;
 		while(i<4){
@@ -135,9 +139,9 @@ public class BenchMark {
 				bw.write(",");
 				bw.write(String.valueOf(density1));
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_li[i]-timeBegin_li[i]));	
+				bw.write(String.valueOf((timeEnd_li[i]-timeBegin_li[i])/1000000000.0));	//in seconds
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_steiner[i]-timeBegin_steiner[i]));	
+				bw.write(String.valueOf((timeEnd_steiner[i]-timeBegin_steiner[i])/1000000000.0));	
 				bw.write("\n");
 				break;
 			case 1:
@@ -149,9 +153,9 @@ public class BenchMark {
 				bw.write(",");
 				bw.write(String.valueOf(density2));
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_li[i]-timeBegin_li[i]));	
+				bw.write(String.valueOf((timeEnd_li[i]-timeBegin_li[i])/1000000000.0));	
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_steiner[i]-timeBegin_steiner[i]));	
+				bw.write(String.valueOf((timeEnd_steiner[i]-timeBegin_steiner[i])/1000000000.0));	
 				bw.write("\n");		
 				break;
 			case 2:
@@ -163,13 +167,13 @@ public class BenchMark {
 				bw.write(",");
 				bw.write(String.valueOf(density3));
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_li[i]-timeBegin_li[i]));	
+				bw.write(String.valueOf((timeEnd_li[i]-timeBegin_li[i])/1000000000.0));	
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_steiner[i]-timeBegin_steiner[i]));	
+				bw.write(String.valueOf((timeEnd_steiner[i]-timeBegin_steiner[i])/1000000000.0));	
 				bw.write("\n");		
 				break;
 			case 3:
-				bw.write(String.valueOf(800));
+				bw.write(String.valueOf(1500));
 				bw.write(",");
 				bw.write(String.valueOf(scores_li[3]/GeneratorRandom.instancesMax));
 				bw.write(",");
@@ -177,9 +181,9 @@ public class BenchMark {
 				bw.write(",");
 				bw.write(String.valueOf(density4));
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_li[i]-timeBegin_li[i]));	
+				bw.write(String.valueOf((timeEnd_li[i]-timeBegin_li[i])/1000000000.0));	
 				bw.write(",");
-				bw.write(String.valueOf(timeEnd_steiner[i]-timeBegin_steiner[i]));	
+				bw.write(String.valueOf((timeEnd_steiner[i]-timeBegin_steiner[i])/1000000000.0));	
 				bw.write("\n");
 				break;
 
@@ -191,8 +195,5 @@ public class BenchMark {
 		bw.close();
 		System.out.println("fini!");
 		java.awt.Toolkit.getDefaultToolkit().beep();
-
-
 	}
-
 }
