@@ -22,8 +22,13 @@ public class PointWithColor extends Point{
 		return color;}
 
 	public void setColor(Coloring color) {
-		this.color = color;}
+		this.color = color
+		;}
 	
 	public Point getP(){return this.point;}
 	
+	@Override
+	public String toString() {
+		return "["+color+"]";
+	}
 }

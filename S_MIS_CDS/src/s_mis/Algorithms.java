@@ -2,9 +2,11 @@ package s_mis;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
-import algorithms.Tree2D;
+import steiner.Tree2D;
 
 public class Algorithms {
 
@@ -20,12 +22,14 @@ public class Algorithms {
 		ArrayList<PointWithColor> whiteNode = coloringProcess(udg, Coloring.WHITE);
 		ArrayList<PointWithColor> MIS = new ArrayList<>();
 		ArrayList<PointWithColor> candidat = new ArrayList<>();
-
-		candidat.add(whiteNode.remove(0));
+		
+		Collections.shuffle(whiteNode);
+		candidat.add(whiteNode.get(0));
 
 		while(!candidat.isEmpty()){
 			PointWithColor random =candidat.remove(0);
-			if(random.getColor()==Coloring.GRAY) continue ;
+			if(random.getColor()==Coloring.GRAY) 
+				continue ;
 
 			random.setColor(Coloring.BLACK);
 			MIS.add(random);
@@ -38,18 +42,23 @@ public class Algorithms {
 			for(PointWithColor pt : whiteNode){
 				if (pt.distance(random)< seuil){
 					for(PointWithColor ptv : whiteNode){
-						if(ptv.equals(pt)) continue ;
-						if(ptv.distance(pt)< seuil && ptv.getColor()==Coloring.WHITE ){
-							ptv.setColor(Coloring.BLACK);
+						if(ptv.distance(pt)< seuil && ptv.getColor()==Coloring.WHITE && !candidat.contains(ptv)){
 							candidat.add(ptv);
 						}
 					}
 				}
 			}	
 		}	
+		
+		//be sure that node are really black before apply s_mis on
+		for(PointWithColor p : MIS){ 
+			p.setColor(Coloring.BLACK);
+		}
+		
 		return MIS;
 	}
 	
+
 	/**
 	 * 
 	 * @param udg
@@ -325,11 +334,7 @@ public class Algorithms {
 			if (point.distance(p)<seuil && !point.equals(p)) 
 				result.add(point);
 
-		
 		return result;
 	}
-
-	
-	
 
 }

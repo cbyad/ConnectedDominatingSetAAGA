@@ -22,6 +22,8 @@ public class GeneratorRandom {
 	private static int longueur=1400;
 	public  static int rayon=largeur/2;
 	public  static int instancesMax=100;
+	public static int edgeThreshold =55 ;
+
 
 	public static double density(ArrayList<Point> udg){
 		return udg.size()/(Math.PI*rayon*rayon);
