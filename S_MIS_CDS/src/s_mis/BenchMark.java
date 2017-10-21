@@ -119,7 +119,7 @@ public class BenchMark {
 
 			timeBegin_steiner[i]=System.nanoTime();
 			for(int j=0 ;j<instances.size();j++){
-				scores_steiner[i]+=computeAlgoLi(instances.get(j)).size();
+				scores_steiner[i]+=computeSteiner(instances.get(j)).size();
 			}
 			timeEnd_steiner[i]=System.nanoTime();
 			System.out.println("Steiner computing "+i+" done");
