@@ -13,4 +13,4 @@ s_mis_and_steiner_score: gnuplot/s_mis_and_steiner_score.plt benchmark.csv
 	gnuplot gnuplot/s_mis_and_steiner_score.plt
 
 clean:
-	rm -rf *.log *.out *.aux *.png
+	rm -rf *.log *.out *.aux *.png *.csv

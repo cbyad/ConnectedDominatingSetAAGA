@@ -5,7 +5,7 @@ set output 'img/s_mis.png'
 
 
 # Legend
-set key left top
+set key right top
 
 
 # Labels
